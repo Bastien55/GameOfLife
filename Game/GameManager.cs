@@ -1,5 +1,4 @@
 ﻿using GameOfLife.Game.Logical;
-using GameOfLife.Helper;
 using GameOfLife.Models;
 using System;
 using System.Collections.Generic;
@@ -13,8 +12,8 @@ namespace GameOfLife.Game
     public class GameManager
     {
         #region Constant
-        const int NUMBER_OF_ROWS = 150;
-        const int NUMBER_OF_COLUMN = 150;
+        const int NUMBER_OF_ROWS = 20;
+        const int NUMBER_OF_COLUMN = 20;
         #endregion
 
         #region Singleton
@@ -71,9 +70,11 @@ namespace GameOfLife.Game
                 while(GameIsAlive)
                 {
                     Logical.SimulateGeneration();
-                    Thread.Sleep(TimeSpan.FromSeconds(0.5));
+                    Thread.Sleep(TimeSpan.FromSeconds(0.25));
                 }
             });
+
+            thread.Start();
         }
 
         public void Stop()
