@@ -17,8 +17,9 @@ namespace GameOfLife.Game.Logical
         {
             get { return _area; }
             set 
-            { 
+            {
                 _area = value;
+                OnGenerationChanged?.Invoke(_area, EventArgs.Empty);   
             }
         }
 
@@ -35,6 +36,8 @@ namespace GameOfLife.Game.Logical
 
         public event EventHandler OnMaxGeneration;
 
+        public event EventHandler OnGenerationChanged;
+
         public GameLogique(Cell[,] cells)
         {
             Area = cells;
@@ -44,6 +47,8 @@ namespace GameOfLife.Game.Logical
 
         public void SimulateGeneration()
         {
+            if(NumberGeneration == 0)
+                Generate_Cells();
             Cell[,] currentGeneration = Area;
             int rows = currentGeneration.GetLength(0);
             int cols = currentGeneration.GetLength(1);
@@ -71,6 +76,22 @@ namespace GameOfLife.Game.Logical
 
             Area = newGeneration;
             NumberGeneration++;
+        }
+
+        public void Generate_Cells()
+        {
+            Random random = new Random();
+            if(Area != null)
+            {
+                for(int i = 0; i < Area.GetLength(0); i++)
+                {
+                    for(int j = 0; j < Area.GetLength(1); j++)
+                    {
+                        var r = random.Next(0, 2);
+                        Area[i, j].IsAlive = r == 1;
+                    }
+                }
+            }
         }
 
         private int CountLiveNeighbors(Cell[,] grid, int row, int col)
