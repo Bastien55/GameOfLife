@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GameOfLife.Events;
+using GameOfLife.Service;
+using SocketBackend;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +26,19 @@ namespace GameOfLife.View
         public ChatView()
         {
             InitializeComponent();
+            EventService.Instance.OnShowControl += Handler_OnShowControl;
+        }
+
+        private async void Handler_OnShowControl(object? sender, EventArgs e)
+        {
+            var result = MessageBox.Show($"L'utilisateur Guest propose une règle 2A3R voulez-vous l'acceptez ?", "Message", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                await SocketService.Instance.Client.SendMessageAsync(new Message(SocketBackend.Enumeration.TypeMessage.VALID_RULE));
+            }
+            else
+                await SocketService.Instance.Client.SendMessageAsync(new Message(SocketBackend.Enumeration.TypeMessage.INVALID_RULE));
         }
     }
 }

@@ -8,6 +8,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="200">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/GameOfLife;component/Ressources/ImageDictionnary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary> 
+    </UserControl.Resources>
+
     <UserControl.DataContext>
         <VM:ChatViewModel/>
     </UserControl.DataContext>
@@ -40,10 +48,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
             <TextBox Text="{Binding InputMessage}"/>
 
             <Button Grid.Column="1" Content="Send" Command="{Binding SendCommand}"/>
+            <Button Grid.Column="2" Height="50" Command="{Binding SendReplay}">
+                <Image Source="{StaticResource Reload}" Stretch="UniformToFill"/>
+            </Button>
         </Grid>
 
     </Grid>

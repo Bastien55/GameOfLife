@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GameOfLife.Events;
+using GameOfLife.Game;
 using GameOfLife.Service;
 using SocketBackend;
 using System;
@@ -38,24 +40,54 @@ namespace GameOfLife.ViewModel
 
         private void Client_OnMessageReceived(object? sender, Message e)
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            switch(e.TypeMessage)
             {
-                Messages.Add(e);
-            }));
+                case SocketBackend.Enumeration.TypeMessage.GAME_REPLAY:
+                    EventService.Instance.RaiseShowControl();
+                    break;
+                case SocketBackend.Enumeration.TypeMessage.VALID_RULE:
+                    GameManager.Instance.ReloadGame();
+                    break;
+                case SocketBackend.Enumeration.TypeMessage.MSG_CHAT:
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        Messages.Add(e);
+                    }));
+                    break;
+            }
         }
 
         public async Task SendMessage()
         {
             if(inputMessage != null)
             {
-                await SocketService.Instance.Client.SendMessageAsync("Guest : " + inputMessage);
-                //Messages.Add(InputMessage);
+                await SocketService.Instance.Client.SendMessageAsync(new Message("Guest", inputMessage, SocketBackend.Enumeration.TypeMessage.MSG_CHAT));
+            }
+        }
+
+        public async Task SendMessage(Message msg)
+        {
+            if(msg != null)
+            {
+                await SocketService.Instance.Client.SendMessageAsync(msg);
             }
         }
 
         public ICommand SendCommand
         {
             get { return new RelayCommand(() => Task.Run(() => SendMessage())); }
+        }
+
+        public ICommand SendReplay
+        {
+            get 
+            {
+                return new RelayCommand(async () =>
+                {
+                    Message msg = new Message("Guest", string.Empty, SocketBackend.Enumeration.TypeMessage.GAME_REPLAY);
+                    await SendMessage(msg);
+                });
+            }
         }
     }
 }

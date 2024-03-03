@@ -49,6 +49,7 @@ namespace GameOfLife.Game.Logical
         {
             if(NumberGeneration == 0)
                 Generate_Cells();
+
             Cell[,] currentGeneration = Area;
             int rows = currentGeneration.GetLength(0);
             int cols = currentGeneration.GetLength(1);
