@@ -42,21 +42,34 @@ namespace GameOfLife.Game
 
         private GameManager()
         {
-            Cell[,] Area = new Cell[NUMBER_OF_ROWS, NUMBER_OF_COLUMN];
-
-            for(int x = 0; x < NUMBER_OF_ROWS; x++)
-            {
-                for(int y = 0; y < NUMBER_OF_COLUMN; y++)
-                {
-                    Area[x,y] = new Cell(x,y);
-                }
-            }
-
-
-            Logical = new GameLogique(Area);
+            Logical = new GameLogique(InitArea());
             Logical.OnMaxGeneration += Logical_OnMaxGeneration;
         }
 
+        /// <summary>
+        /// Method for the initialization of the area
+        /// </summary>
+        /// <returns></returns>
+        public Cell[,] InitArea()
+        {
+            Cell[,] Area = new Cell[NUMBER_OF_ROWS, NUMBER_OF_COLUMN];
+
+            for (int x = 0; x < NUMBER_OF_ROWS; x++)
+            {
+                for (int y = 0; y < NUMBER_OF_COLUMN; y++)
+                {
+                    Area[x, y] = new Cell(x, y);
+                }
+            }
+
+            return Area;
+        }
+
+        /// <summary>
+        /// Event which allow to stop the game whether we hit the max generation number
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Logical_OnMaxGeneration(object? sender, EventArgs e)
         {
             Stop();
@@ -80,6 +93,17 @@ namespace GameOfLife.Game
         public void Stop()
         {
             GameIsAlive = false;
+        }
+
+        /// <summary>
+        /// Method which allow to restart the game
+        /// </summary>
+        public void ReloadGame()
+        {
+            Stop();
+            Logical.NumberGeneration = 0;
+            Logical.Area = InitArea();
+            Start();
         }
     }
 }

@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="GameOfLife.View.ChatView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameOfLife.View"
+             xmlns:VM="clr-namespace:GameOfLife.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="200">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/GameOfLife;component/Ressources/ImageDictionnary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary> 
+    </UserControl.Resources>
+
+    <UserControl.DataContext>
+        <VM:ChatViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <ListView ItemsSource="{Binding Messages}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Black" Background="Yellow" CornerRadius="10">
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="{Binding Name}"/>
+                            <TextBlock Text="{Binding ContentMessage}"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Text="{Binding InputMessage}"/>
+
+            <Button Grid.Column="1" Content="Send" Command="{Binding SendCommand}"/>
+            <Button Grid.Column="2" Height="50" Command="{Binding SendReplay}">
+                <Image Source="{StaticResource Reload}" Stretch="UniformToFill"/>
+            </Button>
+        </Grid>
+
+    </Grid>
+    
+</UserControl>
