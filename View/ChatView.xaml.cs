@@ -28,6 +28,12 @@ namespace GameOfLife.View
         {
             InitializeComponent();
             EventService.Instance.OnShowControl += Handler_OnShowControl;
+            EventService.Instance.OnErrorLogin += Handler_OnErrorLogin; ;
+        }
+
+        private void Handler_OnErrorLogin(object? sender, UserMessage e)
+        {
+            MessageBox.Show($"Pour l'utilisateur {e.Name} : {e.ContentMessage}");
         }
 
         private async void Handler_OnShowControl(object? sender, UserMessage e)

@@ -33,6 +33,7 @@ namespace GameOfLife.Events
 
         #region Events Declaration
         public event EventHandler<UserMessage> OnShowControl;
+        public event EventHandler<UserMessage> OnErrorLogin;
         #endregion
 
         #region Events Invocations
@@ -45,6 +46,16 @@ namespace GameOfLife.Events
             {
                 OnShowControl.Invoke(null, msg);
             }
+        }
+
+        /// <summary>
+        /// Event which allow to display an error msg
+        /// </summary>
+        /// <param name="msg"></param>
+        public void RaiseErrorLogin(UserMessage msg, string ErrorMsg)
+        {
+            msg.ContentMessage = ErrorMsg;
+            OnErrorLogin?.Invoke(null, msg);
         }
         #endregion
     }

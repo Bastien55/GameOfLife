@@ -83,8 +83,10 @@ namespace GameOfLife.Service
                             InitCurrentUser(e);
                             break;
                         case TypeMessage.USER_INVALID_CONNECTION:
+                            EventService.Instance.RaiseErrorLogin(e, "Erreur de connection");
                             break;
-                        case TypeMessage.USER_ALREADY_EXIST: 
+                        case TypeMessage.USER_ALREADY_EXIST:
+                            EventService.Instance.RaiseErrorLogin(e, "Utilisateur déjà existant");
                             break;
                     }
                 }
