@@ -1,5 +1,7 @@
-﻿using GameOfLife.Game;
+﻿using GameOfLife.Events;
+using GameOfLife.Game;
 using GameOfLife.Models;
+using GameOfLife.ViewModel;
 using SocketBackend.Enumeration;
 using SocketBackend.Messages;
 using SocketBackend.Models;
@@ -39,10 +41,20 @@ namespace GameOfLife.Service
             SocketService.Instance.Client.OnUserMessageReceived += Handler_OnMessageReceived;
         }
 
+        private Rule _rule = new Rule("3A2S");
+
         #region Properties
         public User CurrentUser { get; set; } = new User();
 
-        public Rule CurrentRule { get; set; } = new Rule("3A2S");
+        public Rule CurrentRule
+        {
+            get { return _rule; }
+            set 
+            { 
+                _rule = value;
+                ViewModelLocator.Instance.UserVM.Rule = _rule.ToString();
+            }
+        }
 
         public bool IsLoggedIn { get; set; } = false;
         #endregion
@@ -63,6 +75,9 @@ namespace GameOfLife.Service
                 {
                     switch(e.TypeMessage)
                     {
+                        case SocketBackend.Enumeration.TypeMessage.GAME_REPLAY:
+                            EventService.Instance.RaiseShowControl(e);
+                            break;
                         case TypeMessage.USER_REGISTERED:
                         case TypeMessage.USER_VALID_CONNECTION:
                             InitCurrentUser(e);

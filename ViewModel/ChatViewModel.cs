@@ -43,9 +43,6 @@ namespace GameOfLife.ViewModel
         {
             switch(e.TypeMessage)
             {
-                case SocketBackend.Enumeration.TypeMessage.GAME_REPLAY:
-                    EventService.Instance.RaiseShowControl();
-                    break;
                 case SocketBackend.Enumeration.TypeMessage.VALID_RULE:
                     GameManager.Instance.ReloadGame();
                     break;

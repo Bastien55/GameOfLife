@@ -50,6 +50,7 @@ namespace GameOfLife.ViewModel
         {
             OnPropertyChanged(nameof(IsLogged));
             OnPropertyChanged(nameof(Model));
+            OnPropertyChanged(nameof(Rule));
         }
 
         public void UpdateForDB()
