@@ -58,7 +58,6 @@ namespace GameOfLife.ViewModel
             RowCount = Cells.GetLength(0);
             ColumnCount = Cells.GetLength(1);
             GameManager.Instance.Logical.OnGenerationChanged += Logical_OnGenerationChanged;
-            GameManager.Instance.Start();
         }
 
         private void Logical_OnGenerationChanged(object? sender, EventArgs e)

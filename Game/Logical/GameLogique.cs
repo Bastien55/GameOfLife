@@ -1,4 +1,5 @@
 ﻿using GameOfLife.Models;
+using GameOfLife.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace GameOfLife.Game.Logical
 
         #region Methods
 
-        public void SimulateGeneration()
+        public void SimulateGeneration(Rule rule)
         {
             if(NumberGeneration == 0)
                 Generate_Cells();
@@ -66,11 +67,11 @@ namespace GameOfLife.Game.Logical
                     // Apply the rules of the Game of Life
                     if (currentGeneration[i, j].IsAlive)
                     {
-                        newGeneration[i, j].IsAlive = liveNeighbors == 2 || liveNeighbors == 3;
+                        newGeneration[i, j].IsAlive = liveNeighbors == rule.Stay;
                     }
                     else
                     {
-                        newGeneration[i, j].IsAlive = liveNeighbors == 3;
+                        newGeneration[i, j].IsAlive = liveNeighbors == rule.Alive;
                     }
                 }
             }

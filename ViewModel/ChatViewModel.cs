@@ -4,6 +4,7 @@ using GameOfLife.Events;
 using GameOfLife.Game;
 using GameOfLife.Service;
 using SocketBackend;
+using SocketBackend.Messages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -61,7 +62,7 @@ namespace GameOfLife.ViewModel
         {
             if(inputMessage != null)
             {
-                await SocketService.Instance.Client.SendMessageAsync(new Message("Guest", inputMessage, SocketBackend.Enumeration.TypeMessage.MSG_CHAT));
+                await SocketService.Instance.Client.SendMessageAsync(new Message(UserSession.Instance.CurrentUser.Name ?? string.Empty, inputMessage, SocketBackend.Enumeration.TypeMessage.MSG_CHAT));
             }
         }
 
@@ -84,7 +85,7 @@ namespace GameOfLife.ViewModel
             {
                 return new RelayCommand(async () =>
                 {
-                    Message msg = new Message("Guest", string.Empty, SocketBackend.Enumeration.TypeMessage.GAME_REPLAY);
+                    UserMessage msg = new UserMessage(UserSession.Instance.CurrentUser, SocketBackend.Enumeration.TypeMessage.GAME_REPLAY);
                     await SendMessage(msg);
                 });
             }
