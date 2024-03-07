@@ -10,7 +10,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.02*"/>
+            <RowDefinition Height="0.5*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -19,7 +19,9 @@
             <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
 
+        <View:UserProfilView Grid.ColumnSpan="2"/>
         <View:GameView Grid.Row="1" Grid.Column="0"/>
         <View:ChatView Grid.Row="1" Grid.Column="1"/>
+        <View:Login Grid.RowSpan="2" Grid.ColumnSpan="2" Panel.ZIndex="5"/>
     </Grid>
 </Window>

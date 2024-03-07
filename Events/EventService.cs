@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SocketBackend.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,19 +32,30 @@ namespace GameOfLife.Events
         #endregion
 
         #region Events Declaration
-        public event EventHandler OnShowControl;
+        public event EventHandler<UserMessage> OnShowControl;
+        public event EventHandler<UserMessage> OnErrorLogin;
         #endregion
 
         #region Events Invocations
         /// <summary>
         /// Event which allow to show the control for reload game request
         /// </summary>
-        public void RaiseShowControl()
+        public void RaiseShowControl(UserMessage msg)
         {
             if(OnShowControl != null)
             {
-                OnShowControl.Invoke(null, EventArgs.Empty);
+                OnShowControl.Invoke(null, msg);
             }
+        }
+
+        /// <summary>
+        /// Event which allow to display an error msg
+        /// </summary>
+        /// <param name="msg"></param>
+        public void RaiseErrorLogin(UserMessage msg, string ErrorMsg)
+        {
+            msg.ContentMessage = ErrorMsg;
+            OnErrorLogin?.Invoke(null, msg);
         }
         #endregion
     }

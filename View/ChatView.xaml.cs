@@ -1,6 +1,7 @@
 ﻿using GameOfLife.Events;
 using GameOfLife.Service;
 using SocketBackend;
+using SocketBackend.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,14 +28,21 @@ namespace GameOfLife.View
         {
             InitializeComponent();
             EventService.Instance.OnShowControl += Handler_OnShowControl;
+            EventService.Instance.OnErrorLogin += Handler_OnErrorLogin; ;
         }
 
-        private async void Handler_OnShowControl(object? sender, EventArgs e)
+        private void Handler_OnErrorLogin(object? sender, UserMessage e)
         {
-            var result = MessageBox.Show($"L'utilisateur Guest propose une règle 2A3R voulez-vous l'acceptez ?", "Message", MessageBoxButton.YesNo);
+            MessageBox.Show($"Pour l'utilisateur {e.Name} : {e.ContentMessage}");
+        }
+
+        private async void Handler_OnShowControl(object? sender, UserMessage e)
+        {
+            var result = MessageBox.Show($"L'utilisateur {e.Name} propose une règle {e.Rule} voulez-vous l'acceptez ?", "Message", MessageBoxButton.YesNo);
 
             if (result == MessageBoxResult.Yes)
             {
+                UserSession.Instance.CurrentRule = new Models.Rule(e.Rule);
                 await SocketService.Instance.Client.SendMessageAsync(new Message(SocketBackend.Enumeration.TypeMessage.VALID_RULE));
             }
             else

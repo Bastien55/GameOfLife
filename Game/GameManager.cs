@@ -1,5 +1,6 @@
 ﻿using GameOfLife.Game.Logical;
 using GameOfLife.Models;
+using GameOfLife.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,7 +83,7 @@ namespace GameOfLife.Game
             {
                 while(GameIsAlive)
                 {
-                    Logical.SimulateGeneration();
+                    Logical.SimulateGeneration(UserSession.Instance.CurrentRule);
                     Thread.Sleep(TimeSpan.FromSeconds(0.25));
                 }
             });

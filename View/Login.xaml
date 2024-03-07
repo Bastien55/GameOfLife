@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="GameOfLife.View.Login"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameOfLife.View"
+             xmlns:VM="clr-namespace:GameOfLife.ViewModel"
+             xmlns:enum="clr-namespace:SocketBackend.Enumeration;assembly=SocketBackend"
+             xmlns:service="clr-namespace:GameOfLife.Service"
+             xmlns:converter="clr-namespace:GameOfLife.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="200" DataContext="{Binding Source={x:Static VM:ViewModelLocator.Instance}, Path=UserVM}">
+
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Border Background="Beige" BorderBrush="DarkBlue" BorderThickness="1" CornerRadius="10" 
+            Visibility="{Binding IsLogged, Converter={StaticResource BoolToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Content="Name:" Margin="5"/>
+            <TextBox Grid.Row="1" x:Name="txtName" Margin="5" Text="{Binding Name}"/>
+
+            <Label Grid.Row="2" Content="Password:" Margin="5"/>
+            <TextBox Grid.Row="3" x:Name="txtPassword" Margin="5"/>
+
+            <Label Grid.Row="4" Content="Règle:" Margin="5"/>
+            <TextBox Grid.Row="5" x:Name="txtRule" Margin="5" Text="{Binding Rule}"/>
+
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Content="Se connecter" Margin="5" 
+                        Command="{Binding ConnectionCommand}"
+                        CommandParameter="{x:Static enum:TypeMessage.USER_REQUEST_CONNECTION}"/>
+                
+                <Button Grid.Column="1" Content="S'inscrire" Margin="5"
+                         Command="{Binding ConnectionCommand}"
+                         CommandParameter="{x:Static enum:TypeMessage.NEW_USER}"/>
+
+            </Grid>
+
+        </Grid>
+    </Border>
+    
+</UserControl>
